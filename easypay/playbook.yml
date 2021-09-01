@@ -58,6 +58,11 @@
                 - 22
               cidr_ip: 0.0.0.0/0
               rule_desc: allow all on ssh port
+            - proto: tcp
+              from_port: 8080
+              to_port: 8080
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on port 8080
         register: result_sec_group
 
       - name: Provision instance(s)

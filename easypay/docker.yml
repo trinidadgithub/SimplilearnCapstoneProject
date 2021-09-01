@@ -9,38 +9,26 @@
 
   tasks:
 
-     - name: uninstall docker
-       shell: |
-               sudo apt-get remove docker docker-engine docker.io containerd runc
-
      - name: patch the environment
        shell: |
-               sudo apt-get update && sudo apt-get install 
+               sudo apt-get -y update && sudo apt-get install 
 
-     - name: install packages to allow apt to user repository over https:
+     - name: install packages to allow apt to user repository over https
        shell: |
-               sudo apt-get install \
-                    apt-transport-https \
-                    ca-certificates \
-                    curl \
-                    gnupg \
-                    lsb-release
+               sudo apt-get -y install apt-transport-https ca-certificates curl gnupg lsb-release
 
      - name: Add Docker's official GPG key
        shell: |
-		curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
-                    | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
      - name: Set up the stable repository
        shell: |
-               echo \
-                   "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-                   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+               echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
      - name: Install Docker Engine and configure cgroup driver to systemd
        shell: |
-               sudo apt-get update
-               sudo apt-get install docker-ce docker-ce-cli containerd.io
+               sudo apt-get -y update
+               sudo apt-get -y install docker-ce docker-ce-cli containerd.io
                echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' >> /tmp/daemon.json
                sudo mv /tmp/daemon.json /etc/docker/.
                sudo chmod 600 /etc/docker/daemon.json
@@ -53,6 +41,8 @@
      - name: Create Docker group and add user and reboot
        shell: |
                sudo groupadd docker
-	       sudo usermod -aG docker $USER
-               sudo reboot now
+               sudo usermod -aG docker $USER
 
+     - name: Reboot
+       shell: |
+               sudo reboot now

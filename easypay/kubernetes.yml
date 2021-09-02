@@ -1,0 +1,33 @@
+---
+- hosts: "masters, workers"
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  become_user: root
+  gather_facts: yes
+  connection: ssh
+
+  tasks:
+
+     - name: turn off swap
+       shell: |
+               sudo swapoff -a
+               sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab 
+
+     - name: setup kubernetes gpg key
+       shell: |
+               sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+
+     - name: setup keyring
+       shell: |
+               echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+     - name: update packages
+       shell: |
+               sudo apt-get update
+
+     - name: Install kubectl kubelet kubeadm
+       shell: |
+               sudo apt-get install -y kubectl kubelet kubeadm
+    

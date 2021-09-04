@@ -1,6 +1,6 @@
 [masters]
-ec2-3-14-65-95.us-east-2.compute.amazonaws.com
+ec2-18-116-41-45.us-east-2.compute.amazonaws.com
 
 [workers]
-ec2-3-133-98-251.us-east-2.compute.amazonaws.com
-ec2-3-142-152-119.us-east-2.compute.amazonaws.com
+ec2-18-118-247-155.us-east-2.compute.amazonaws.com
+ec2-3-15-224-10.us-east-2.compute.amazonaws.com

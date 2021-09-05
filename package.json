@@ -1,0 +1,20 @@
+{
+  "name": "SimplilearnCapstoneProject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trinidadgithub/SimplilearnCapstoneProject.git"
+  },
+  "keywords": [],
+  "author": "Trinidad Marroquin, Jr. <trinidad.marroquin@gmail.com>",
+  "license": "GNU General Public License",
+  "bugs": {
+    "url": "https://github.com/trinidadgithub/SimplilearnCapstoneProject/issues"
+  },
+  "homepage": "https://github.com/trinidadgithub/SimplilearnCapstoneProject#readme"
+}

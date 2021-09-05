@@ -68,6 +68,11 @@
               to_port: 6443
               cidr_ip: 0.0.0.0/0
               rule_desc: allow all on port 6443
+            - proto: tcp
+              from_port: 10250
+              to_port: 10250
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on port 10250, mysql
         register: result_sec_group
 
       - name: Provision instance(s)

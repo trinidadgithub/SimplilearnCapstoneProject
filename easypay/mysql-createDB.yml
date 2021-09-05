@@ -1,0 +1,54 @@
+---
+- hosts: masters
+  remote_user: ubuntu
+  gather_facts: yes
+  connection: ssh
+
+  vars:
+    srcdir: "/home/ubuntu/capstone/easypay"
+    destdir: "/home/ubuntu"
+    
+
+  tasks:
+
+    - name: Copy secret file
+      copy:
+        src: "{{ srcdir }}/mysql-secret.yml"
+        dest: "{{ destdir }}/mysql-secret.yml"
+        mode : 0664
+
+    - name: Copy pod file
+      copy:
+        src: "{{ srcdir }}/mysql-pod.yml"
+        dest: "{{ destdir }}/mysql-pod.yml"
+        mode : 0664
+
+    - name: Copy service file
+      copy:
+        src: "{{ srcdir }}/mysql-service.yml"
+        dest: "{{ destdir }}/mysql-service.yml"
+        mode : 0664
+
+    - name:  Create the secret
+      command: kubectl create -f mysql-secret.yml
+      register: result_secret
+
+    - name:  Create the pod
+      command: kubectl create -f mysql-pod.yml
+      register: result_pod
+
+    - name:  Create the service
+      command: kubectl create -f mysql-service.yml
+      register: result_service
+
+    - name: Get secret command
+      debug:
+        msg: "{{ result_secret.stdout }}"
+
+    - name: Get pod command
+      debug:
+        msg: "{{ result_pod.stdout }}"
+    
+    - name: Get service command
+      debug:
+        msg: "{{ result_service.stdout }}"

@@ -3,36 +3,39 @@ var mysql = require('mysql')
 
 var Router = express.Router();
 
-var con = mysql.createConnection({
+var ConnPool = mysql.createPool({
   host: '10.100.137.83',
   user: 'root',
-  password: 'admin'
+  password: 'admin',
+  database: 'mysql'
 })
 
-// create database and MESSAGE table if not exist
 
-con.connect(function(err) {
-   if (err) throw err;
-   console.log("Connected!");
-   con.query('CREATE DATABASE IF NOT EXISTS k8smysqldb', function (err, result) {
-       if (err) throw err;
-       console.log("Database k8smysqldb created");
-   });
-   var sql = "CREATE TABLE IF NOT EXISTS k8smysqldb.messages ( id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(ID), text VARCHAR(100))"
-   con.query(sql, function (err, result) {
-       if (err) throw err;
-       console.log("Table messages created.");
-   });
-});
+// create database and MESSAGE table if not exist
+ConnPool.query('CREATE DATABASE IF NOT EXISTS k8smysqldb', function (err) {
+if (err) throw Error('\n\t **** error creating database **** ' + err)
+
+console.log('\n\t ==== database k8smysqldb created !! ====')
+
+})
+
+// create the table in k8smysqldb
+ConnPool.query('CREATE TABLE IF NOT EXISTS k8smysqldb.messages('
++ 'id INT NOT NULL AUTO_INCREMENT,'
++ 'PRIMARY KEY(id),'
++ 'text VARCHAR(100)'
++ ')', function (err) {
+if (err) throw Error('\n\t **** error creating table **** ' + err);
+})
 
 /**
 * /all
 */
 Router.get('/all', function (req, res) {
-   ConnPoolk8smysqldb.getConnection(function (errConn, conn) {
+   ConnPool.getConnection(function (errConn, conn) {
    if (errConn) throw Error('error get connection : ' + errConn)
 
-   conn.query('SELECT * FROM messages', function (errSelect, rows) {
+   conn.query('SELECT * FROM k8smysqldb.messages', function (errSelect, rows) {
 	if (errSelect) throw Error('error selecting messages : ' + errSelect)
 	res.writeHead(200, 
           {

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: msg-api
+    image: tmarroquin/myapp:latest
+    ports:
+    - name: msg-api
+      containerPort: 8080

@@ -3,10 +3,12 @@ kind: Service
 metadata:
   name: mysql-service
   labels:
-    name: lbl-k8s-mysql
+    name: mysql
 spec:
   ports:
-  - port: 3306
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
   selector:
-    name: lbl-k8s-mysql
+    name: mysql
   type: ClusterIP

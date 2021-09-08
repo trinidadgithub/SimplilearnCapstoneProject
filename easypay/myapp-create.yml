@@ -1,0 +1,40 @@
+---
+- hosts: masters
+  remote_user: ubuntu
+  gather_facts: yes
+  connection: ssh
+
+  vars:
+    srcdir: "/home/ubuntu/capstone/easypay"
+    destdir: "/home/ubuntu"
+    
+
+  tasks:
+
+    - name: Copy pod file
+      copy:
+        src: "{{ srcdir }}/myapp-pod.yml"
+        dest: "{{ destdir }}/myapp-pod.yml"
+        mode : 0664
+
+    - name:  Create the pod
+      command: kubectl create -f myapp-pod.yml
+      register: result_pod
+
+    - name: Get pod command
+      debug:
+        msg: "{{ result_pod.stdout }}"
+
+    - name: Copy service file
+      copy:
+        src: "{{ srcdir }}/myapp-service.yml"
+        dest: "{{ destdir }}/myapp-service.yml"
+        mode : 0664
+
+    - name:  Create the pod
+      command: kubectl create -f myapp-service.yml
+      register: result_service
+
+    - name: Get pod command
+      debug:
+        msg: "{{ result_service.stdout }}"

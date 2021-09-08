@@ -73,6 +73,11 @@
               to_port: 10250
               cidr_ip: 0.0.0.0/0
               rule_desc: allow all on port 10250, mysql
+            - proto: tcp
+              from_port: 3306
+              to_port: 3306
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on port 3306, mysql
         register: result_sec_group
 
       - name: Provision instance(s)

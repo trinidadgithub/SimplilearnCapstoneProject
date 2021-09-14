@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    replicaset: myapp-rs
+    type: front-end
+    app: myapp
+spec:
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        name: myapp-pod
+        app: myapp
+        type: myapp-front-end
+    spec:
+      containers:
+        - name: msg-api
+          image: tmarroquin/myapp:latest
+          ports:
+          - name: msg-api
+            containerPort: 8080
+  replicas: 1
+  selector:
+    matchLabels:
+      type: myapp-front-end
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+  labels:
+    name: myapp-service
+    app: myapp
+    type:  myapp-front-end
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    nodePort: 32136
+  selector:
+    type: myapp-front-end
+  type: NodePort

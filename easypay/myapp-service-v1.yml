@@ -3,12 +3,14 @@ kind: Service
 metadata:
   name: myapp-service
   labels:
-    name: myapp
+    name: myapp-service
+    app: myapp
+    type:  myapp-front-end
 spec:
   ports:
   - protocol: TCP
     port: 8080
     nodePort: 32136
   selector:
-    name: myapp-pod
+    type: myapp-front-end
   type: NodePort

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-rs
+  labels:
+    replicaset: myapp-rs
+    type: front-end
+    app: myapp
+spec:
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        name: myapp-pod
+        app: myapp
+        type: myapp-front-end
+    spec:
+      containers:
+        - name: msg-api
+          image: tmarroquin/myapp:latest
+          ports:
+          - name: msg-api
+            containerPort: 8080
+  replicas: 1
+  selector:
+    matchLabels:
+      type: myapp-front-end
